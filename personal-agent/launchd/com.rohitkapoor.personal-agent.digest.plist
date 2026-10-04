@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.rohitkapoor.personal-agent.digest</string>
+
+    <!-- Absolute paths only — launchd runs with a minimal environment, no PATH lookup
+         the way an interactive shell has. WorkingDirectory matters beyond just resolving
+         send_digest.py: gmail_server.py and delivery.py both build their default
+         credential/token paths from os.getcwd(), so without this they'd fail to find
+         .secrets/ under launchd's default working directory (usually "/"). -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/rohitkapoor/miniconda3/bin/python3</string>
+        <string>/Users/rohitkapoor/projects/AI/personal-agent/scripts/send_digest.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/rohitkapoor/projects/AI/personal-agent</string>
+
+    <!-- Pair with `pmset repeat wakeorpoweron MTWRFSU 06:25:00` (run once, as your own
+         user, not via this plist — see README "Scheduling") so the Mac is actually awake
+         5 minutes before this fires. launchd does not wake a sleeping Mac on its own. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/rohitkapoor/projects/AI/personal-agent/logs/digest.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/rohitkapoor/projects/AI/personal-agent/logs/digest.err.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

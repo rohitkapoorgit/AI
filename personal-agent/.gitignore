@@ -1,0 +1,9 @@
+.env
+.secrets/
+logs/*.log
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.idea/
+.DS_Store
